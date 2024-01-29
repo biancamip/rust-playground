@@ -68,7 +68,7 @@ impl ConsoleLogger {
 mod test {
     use log::{error, info, warn};
 
-    use crate::console_logger::{ConsoleLogger, ConsoleLoggerConfig};
+    use crate::loggers::console_logger::{ConsoleLogger, ConsoleLoggerConfig};
 
     #[test]
     #[ignore]
