@@ -20,9 +20,9 @@ impl RedisLogger {
 
     fn init_task(config: RedisLoggerConfig) {
         let max_log_level = config.max_log_level;
-        let stdout_channel_name = format!("monitoring-nomad:{}.stdout", &config.group_name);
-        let warn_channel_name = format!("monitoring-nomad:{}.warn", &config.group_name);
-        let stderr_channel_name = format!("monitoring-nomad:{}.stderr", &config.group_name);
+        let stdout_channel_name = format!("monitoring:{}.stdout", &config.group_name);
+        let warn_channel_name = format!("monitoring:{}.warn", &config.group_name);
+        let stderr_channel_name = format!("monitoring:{}.stderr", &config.group_name);
         let group_name = config.group_name;
         let index = config.index;
         let redis_connection_string = config.redis_connection_string;
@@ -113,10 +113,13 @@ impl RedisLoggerBackgroundService {
         loop {
             let (log, level) = match self.log_rx.recv() {
                 Ok(log_level) => {
+                    println!("msg received!: {:?}", log_level);
                     consecutive_failures = 0;
                     log_level
                 }
                 Err(error) => {
+                    eprintln!("recv error! {:?}", error);
+
                     consecutive_failures += 1;
                     if consecutive_failures >= 3 {
                         eprintln!("RedisLoggerBackgroundService failed recv(self.log_rx) after {consecutive_failures} retries. Error: {error}");
@@ -213,6 +216,7 @@ impl RedisLoggerBackgroundService {
     fn build_pipeline(log_messages: &[LogMessage]) -> Pipeline {
         let mut pipeline = Pipeline::new();
         for msg in log_messages {
+            println!("publishing {msg:?} to {}", msg.channel_name);
             pipeline.publish(
                 msg.channel_name,
                 msg.redis_serialize()

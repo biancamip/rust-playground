@@ -55,7 +55,7 @@ impl ServiceLogger {
                 let redis_connection_string = env
                     .log_redis_connection_string
                     .expect("MISSING LOG_REDIS_CONNECTION_STRING");
-                let group_name = env.group_name.expect("GROUP_NAME");
+                let group_name = env.group_name.expect("MISSING GROUP_NAME");
                 let alloc_index = env.alloc_index.unwrap_or_else(|| "0".to_string());
 
                 Self::init_redis(redis_connection_string, group_name, alloc_index)

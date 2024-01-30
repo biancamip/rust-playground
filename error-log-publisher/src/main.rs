@@ -1,4 +1,7 @@
-use std::time::{Duration, Instant};
+use std::{
+    thread,
+    time::{Duration, Instant},
+};
 
 use log::{error, info};
 use service_logger::ServiceLogger;
@@ -7,7 +10,6 @@ fn main() {
     dotenv::dotenv().ok();
     ServiceLogger::init_from_env();
 
-    println!("Hello, world!");
     let now = Instant::now();
 
     let tokio_rt = tokio::runtime::Builder::new_multi_thread()
@@ -27,5 +29,8 @@ fn main() {
 }
 
 async fn main_async() -> anyhow::Result<()> {
+    error!("hi! i'm an error log");
+
+    thread::sleep(Duration::from_secs(60));
     Ok(())
 }
