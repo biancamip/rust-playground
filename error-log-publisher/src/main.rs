@@ -29,8 +29,7 @@ fn main() {
 }
 
 async fn main_async() -> anyhow::Result<()> {
-    error!("hi! i'm an error log");
-
-    thread::sleep(Duration::from_secs(60));
+    error!("hi! this is an error log. did i show up?");
+    thread::sleep(Duration::from_secs(15));
     Ok(())
 }
