@@ -1,0 +1,13 @@
+[package]
+name = "telegram-bot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = { version = "1.0.71" }
+chrono = { version = "0.4" }
+dotenv = { version = "0.15" }
+log = { version = "0.4", features = ["std", "serde"] }
+pretty_env_logger = { version = "0.5" }
+teloxide = { version = "0.13", features = ["macros"] }
+tokio = { version =  "1.8", features = ["rt-multi-thread", "macros"] }
