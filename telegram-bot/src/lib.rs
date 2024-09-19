@@ -9,8 +9,11 @@ use teloxide::{
 #[derive(BotCommands, Clone)]
 #[command(rename_rule = "lowercase", parse_with = "split")]
 pub enum LunaBotCommand {
+    #[command(description = "start a conversation with Luna")]
     Start,
+    #[command(description = "get help on chatting with Luna")]
     Help,
+    #[command(description = "say hi to Luna")]
     Greet,
 }
 
@@ -37,8 +40,8 @@ pub async fn handle_message(bot: Bot, msg: Message, cmd: LunaBotCommand) -> Resp
         return Ok(());
     }
 
-    let text = msg.text().unwrap();
-    info!("message text: {text}");
+    let msg_serialized = serde_json::to_string(&msg).unwrap();
+    info!("message serialized: {msg_serialized}");
 
     Ok(())
 }
